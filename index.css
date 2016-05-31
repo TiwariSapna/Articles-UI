@@ -1,0 +1,58 @@
+body
+{
+	background-color : #3b3a36;
+	color : #f0eceb;
+	font-family : Book Antiqua;
+	
+}
+h1
+{
+	font-family : Lucida Sans;
+	color : #e8edf3;
+	text-align : center;
+}
+p{
+	font-size : 1.2em;
+	padding-left :5%;
+	
+}
+
+h3
+{
+	font-family :Verdana;
+	color : #fccdd3;
+}
+.container
+{
+	margin-left : 5%;
+	margin-right :5%;
+}
+
+form
+{
+	color : black;
+}
+label
+{
+	color : white;
+	font-family : Verdana;
+	text-align :center;
+	font-size : 1.2 em;
+}
+
+#noise, .map
+{
+	height : 100%;
+	width :60%;
+	padding-left : 10%;
+	padding-right :10%;
+}
+.widgEditor
+{
+	display : inline;
+}
+
+iframe
+{
+	margin-top :10%;
+}

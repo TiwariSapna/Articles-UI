@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+
+  <head>  	
+  	<meta charset="utf-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<title>Article Page</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<script type="text/javascript"     src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script type="text/javascript"     src="widgEditor.js"></script>
+	<link rel="stylesheet" href="index.css" >
+
+	
+	</head>
+	
+
+  <body>
+  
+  <div >
+  <h1>All articles in one Place!!</h1>
+  </div>
+  <div class="container">
+  <div class="row">
+ <div class="col-md-8" class="col-sm-6">
+  <h3>Introduction</h3>
+ 
+  <p id="one">
+  Let us begin with a quick introduction in C. Our aim is to show the essential elements of the
+language in real programs, but without getting bogged down in details, rules, and exceptions.
+At this point, we are not trying to be complete or even precise (save that the examples are
+meant to be correct). We want to get you as quickly as possible to the point where you can
+write useful programs, and to do that we have to concentrate on the basics: variables and
+constants, arithmetic, control flow, functions, and the rudiments of input and output. We are
+intentionally leaving out of this chapter features of C that are important for writing bigger
+programs. These include pointers, structures, most of C' rich set of operators, several controlflow
+statements, and the standard library.
+This approach and its drawbacks. Most notable is that the complete story on any particular
+feature is not found here, and the tutorial, by being brief, may also be misleading. And because
+the examples do not use the full power of C, they are not as concise and elegant as they might
+be. We have tried to minimize these effects, but be warned. Another drawback is that later
+chapters will necessarily repeat some of this chapter. We hope that the repetition will help you
+more than it annoys.
+  </p>
+  
+  
+  <hr></hr>
+  </div>
+  <div class="col-md-8" class="col-sm-6">
+  <h3>Types, Operators and Expressions</h3>
+  <p id="two">
+  Variables and constants are the basic data objects manipulated in a program. Declarations list
+the variables to be used, and state what type they have and perhaps what their initial values are.
+Operators specify what is to be done to them. Expressions combine variables and constants to
+produce new values. The type of an object determines the set of values it can have and what
+operations can be performed on it. These building blocks are the topics of this chapter.
+The ANSI standard has made many small changes and additions to basic types and expressions.
+There are now signed and unsigned forms of all integer types, and notations for unsigned
+constants and hexadecimal character constants. Floating-point operations may be done in
+single precision; there is also a long double type for extended precision. String constants may
+be concatenated at compile time. Enumerations have become part of the language, formalizing
+a feature of long standing. Objects may be declared const, which prevents them from being
+changed. The rules for automatic coercions among arithmetic types have been augmented to
+handle the richer set of types.
+Although we didn't say so in Chapter 1, there are some restrictions on the names of variables
+and symbolic constants. Names are made up of letters and digits; the first character must be a
+letter. The underscore ``_'' counts as a letter; it is sometimes useful for improving the
+readability of long variable names. Don't begin variable names with underscore, however, since
+library routines often use such names. Upper and lower case letters are distinct, so x and X are
+two different names. Traditional C practice is to use lower case for variable names, and all
+upper case for symbolic constants.
+At least the first 31 characters of an internal name are significant. For function names and
+external variables, the number may be less than 31, because external names may be used by
+assemblers and loaders over which the language has no control. For external names, the
+standard guarantees uniqueness only for 6 characters and a single case. Keywords like if,
+else, int, float, etc., are reserved: you can't use them as variable names. They must be in
+lower case.
+It's wise to choose variable names that are related to the purpose of the variable, and that are
+unlikely to get mixed up typographically. We tend to use short names for local variables,
+especially loop indices, and longer names for external variables.
+  </p>
+  <hr></hr>
+  </div>
+  <div class="col-md-8" class="col-sm-6">
+  <h3>Functions and Program Structures</h3>
+  <p id="three">
+  others have done instead of starting over from scratch. Appropriate functions hide details of
+operation from parts of the program that don't need to know about them, thus clarifying the
+whole, and easing the pain of making changes.
+C has been designed to make functions efficient and easy to use; C programs generally consist
+of many small functions rather than a few big ones. A program may reside in one or more
+source files. Source files may be compiled separately and loaded together, along with
+previously compiled functions from libraries. We will not go into that process here, however,
+since the details vary from system to system.
+Function declaration and definition is the area where the ANSI standard has made the most
+changes to C. As we saw first in Chapter 1, it is now possible to declare the type of arguments
+when a function is declared. The syntax of function declaration also changes, so that
+declarations and definitions match. This makes it possible for a compiler to detect many more
+errors than it could before. Furthermore, when arguments are properly declared, appropriate
+type coercions are performed automatically.
+The standard clarifies the rules on the scope of names; in particular, it requires that there be
+only one definition of each external object. Initialization is more general: automatic arrays and
+structures may now be initialized.
+The C preprocessor has also been enhanced. New preprocessor facilities include a more
+complete set of conditional compilation directives, a way to create quoted strings from macro
+arguments, and better control over the macro expansion process.
+4.1 Basics of Functions
+To begin with, let us design and write a program to print each line of its input that contains a
+particular ``pattern'' or string of characters. (This is a special case of the UNIX program grep.)
+For example, searching for the pattern of letters ``ould'' in the set of lines
+Ah Love! could you and I with Fate conspire
+To grasp this sorry Scheme of Things entire,
+Would not we shatter it to bits -- and then
+Re-mould it nearer to the Heart's Desire!
+will produce the output
+Ah Love! could you and I with Fate conspire
+Would not we shatter it to bits -- and then
+Re-mould it nearer to the Heart's Desire!
+The job falls neatly into three pieces:
+while (there's another line)
+if (the line contains the pattern)
+print it
+Although it's certainly possible to put the code for all of this in main, a better way is to use the
+structure to advantage by making each part a separate function. Three small pieces are better
+to deal with than one big one, because irrelevant details can be buried in the functions, and the
+chance of unwanted interactions is minimized. And the pieces may even be useful in other
+programs.
+  </p>
+  <hr></hr>
+  </div>
+  <div class="col-md-8" class="col-sm-6">
+  <h3>Constants</h3>
+  <p id="four">
+  
+  An integer constant consisting of a sequence of digits is taken to be octal if it begins with 0
+(digit zero), decimal otherwise. Octal constants do not contain the digits 8 or 9. A sequence of
+digits preceded by 0x or 0X (digit zero) is taken to be a hexadecimal integer. The hexadecimal
+digits include a or A through f or F with values 10 through 15.
+An integer constant may be suffixed by the letter u or U, to specify that it is unsigned. It may
+also be suffixed by the letter l or L to specify that it is long.
+The type of an integer constant depends on its form, value and suffix. (See Par.A.4 for a
+discussion of types). If it is unsuffixed and decimal, it has the first of these types in which its
+value can be represented: int, long int, unsigned long int. If it is unsuffixed, octal or
+hexadecimal, it has the first possible of these types: int, unsigned int, long int, unsigned
+long int. If it is suffixed by u or U, then unsigned int, unsigned long int. If it is
+suffixed by l or L, then long int, unsigned long int. If an integer constant is suffixed by
+UL, it is unsigned long.
+The elaboration of the types of integer constants goes considerably beyond the first edition, which
+merely caused large integer constants to be long. The U suffixes are new.
+A.2.5.2 Character Constants
+A character constant is a sequence of one or more characters enclosed in single quotes as in
+'x'. The value of a character constant with only one character is the numeric value of the
+character in the machine's character set at execution time. The value of a multi-character
+constant is implementation-defined.
+Character constants do not contain the ' character or newlines; in order to represent them, and
+certain other characters, the following escape sequences may be used:
+  
+  </p>
+  <hr></hr>
+  </div>
+  
+  </div>
+  
+  <div class="row">    
+<div class="col-md-8" >
+
+<form action="submit.php" onsubmit="alert('Your post has been submitted for review!!'); return false;">
+			<fieldset>
+				<label for="noise">
+				Make Your own POST:
+				
+				</label>
+				<br></br>
+				<textarea id="noise" name="noise" class="widgEditor nothing"></textarea>
+			</fieldset>
+			<br></br>
+			<fieldset class="submit">
+				<input type="submit" value="POST" />
+			</fieldset>
+		</form>
+</div>  
+      <div class="map" class="col-md-4" >
+	  <h3> View Direction</h3>
+<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6853.31334931688!2d149.5710983929677!3d-33.43399308961885!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0000000000000000%3A0x63680231a1016da2!2sWestern+Region+Academy+of+Sport!5e0!3m2!1sen!2sbd!4v1436826340086" width="100%" height="400" frameborder="0" style="border:0" allowfullscreen></iframe>
+       </div>
+    </div>
+	</div>
+  <script type="text/javascript">
+var minimized_elements = $("#one");
+var minimize_character_count = 300;    
+
+minimized_elements.each(function(){    
+  var t = $(this).text();        
+  if(t.length < minimize_character_count ) return;
+
+  $(this).html(
+      t.slice(0,minimize_character_count )+
+      '<span>... </span><a href="#" class="read_more">Read more</a>'+
+      '<span style="display:none;">'+ t.slice(minimize_character_count ,t.length)+
+      '<a href="#" class="read_less">Read less</a></span>'
+    );  
+});
+
+$('a.read_more', minimized_elements).click(function(event){
+  event.preventDefault();
+  $(this).hide().prev().hide();
+  $(this).next().show();        
+});
+
+$('a.read_less', minimized_elements).click(function(event){
+  event.preventDefault();
+  $(this).parent().hide().prev().show().prev().show();    
+});
+</script>
+<script type="text/javascript">
+var minimized_elements = $("#two");
+var minimize_character_count = 300;    
+
+minimized_elements.each(function(){    
+  var t = $(this).text();        
+  if(t.length < minimize_character_count ) return;
+
+  $(this).html(
+      t.slice(0,minimize_character_count )+
+      '<span>... </span><a href="#" class="read_more">Read more</a>'+
+      '<span style="display:none;">'+ t.slice(minimize_character_count ,t.length)+
+      '<a href="#" class="read_less">Read less</a></span>'
+    );  
+});
+
+$('a.read_more', minimized_elements).click(function(event){
+  event.preventDefault();
+  $(this).hide().prev().hide();
+  $(this).next().show();        
+});
+
+$('a.read_less', minimized_elements).click(function(event){
+  event.preventDefault();
+  $(this).parent().hide().prev().show().prev().show();    
+});
+</script>
+<script type="text/javascript">
+var minimized_elements = $("#three");
+var minimize_character_count = 300;    
+
+minimized_elements.each(function(){    
+  var t = $(this).text();        
+  if(t.length < minimize_character_count ) return;
+
+  $(this).html(
+      t.slice(0,minimize_character_count )+
+      '<span>... </span><a href="#" class="read_more">Read more</a>'+
+      '<span style="display:none;">'+ t.slice(minimize_character_count ,t.length)+
+      '<a href="#" class="read_less">Read less</a></span>'
+    );  
+});
+
+$('a.read_more', minimized_elements).click(function(event){
+  event.preventDefault();
+  $(this).hide().prev().hide();
+  $(this).next().show();        
+});
+
+$('a.read_less', minimized_elements).click(function(event){
+  event.preventDefault();
+  $(this).parent().hide().prev().show().prev().show();    
+});
+</script>
+<script type="text/javascript">
+var minimized_elements = $("#four");
+var minimize_character_count = 300;    
+
+minimized_elements.each(function(){    
+  var t = $(this).text();        
+  if(t.length < minimize_character_count ) return;
+
+  $(this).html(
+      t.slice(0,minimize_character_count )+
+      '<span>... </span><a href="#" class="read_more">Read more</a>'+
+      '<span style="display:none;">'+ t.slice(minimize_character_count ,t.length)+
+      '<a href="#" class="read_less">Read less</a></span>'
+    );  
+});
+
+$('a.read_more', minimized_elements).click(function(event){
+  event.preventDefault();
+  $(this).hide().prev().hide();
+  $(this).next().show();        
+});
+
+$('a.read_less', minimized_elements).click(function(event){
+  event.preventDefault();
+  $(this).parent().hide().prev().show().prev().show();    
+});
+</script>
+  </body>
+  </html>
